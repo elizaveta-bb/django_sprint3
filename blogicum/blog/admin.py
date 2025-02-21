@@ -12,7 +12,7 @@ class CategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Основное'), {'fields': ('title', 'description', 'slug')}),
         (_('Публикация'), {'fields': ('is_published',)}),
-                )
+    )
 
     class Meta:
         verbose_name = _('Категория')
