@@ -48,8 +48,9 @@ class LocationAdmin(admin.ModelAdmin):
         if db_field.name == 'name':
             field.label = _('Название места')
         if db_field.name == 'is_published':
-            field.help_text = _('Снимите галочку, /
-                                чтобы скрыть местоположение.')
+            field.help_text = _(
+                'Снимите галочку, чтобы скрыть местоположение.'
+            )
         return field
 
 
