@@ -78,9 +78,10 @@ class PostAdmin(admin.ModelAdmin):
         if db_field.name == 'is_published':
             field.help_text = _('Снимите галочку, чтобы скрыть публикацию.')
         if db_field.name == 'pub_date':
-            field.help_text = _('Если установить дату и /
-            'время в будущем — '
-                                'можно делать отложенные публикации.')
+            field.help_text = _(
+                'Если установить дату и время в будущем — '
+                'можно делать отложенные публикации.'
+            )
         if db_field.name == 'category':
             field.label = _('Категория')
         if db_field.name == 'location':

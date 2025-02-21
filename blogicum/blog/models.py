@@ -30,8 +30,8 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
-        
-        
+
+
 class Location(models.Model):
     name = models.CharField(max_length=256, verbose_name='Название места')
     is_published = models.BooleanField(default=True,
