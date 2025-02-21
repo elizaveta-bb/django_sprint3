@@ -11,7 +11,8 @@ class Category(models.Model):
         max_length=64,
         unique=True, blank=True,
         verbose_name='Идентификатор',
-        help_text=('Идентификатор страницы для URL; разрешены символы латиницы, цифры, дефис и подчёркивание.'
+        help_text=('Идентификатор страницы для URL; /
+                   разрешены символы латиницы, цифры, дефис и подчёркивание.'
     ))
     is_published = models.BooleanField(
         default=True,
