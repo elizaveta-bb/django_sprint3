@@ -40,8 +40,7 @@ def category_posts(request, category_slug):
         slug=category_slug,
         is_published=True
     )
-    now = datetime.now()
-    
+    now = datetime.now() 
     posts = Post.objects.filter(
         category=category,
         is_published=True,

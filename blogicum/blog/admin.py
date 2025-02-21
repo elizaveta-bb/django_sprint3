@@ -12,7 +12,7 @@ class CategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Основное'), {'fields': ('title', 'description', 'slug')}),
         (_('Публикация'), {'fields': ('is_published',)}),
-    )
+                )
 
     class Meta:
         verbose_name = _('Категория')
@@ -48,7 +48,8 @@ class LocationAdmin(admin.ModelAdmin):
         if db_field.name == 'name':
             field.label = _('Название места')
         if db_field.name == 'is_published':
-            field.help_text = _('Снимите галочку, чтобы скрыть местоположение.')
+            field.help_text = _('Снимите галочку, /
+                                'чтобы скрыть местоположение.')
         return field
 
 
@@ -76,7 +77,8 @@ class PostAdmin(admin.ModelAdmin):
         if db_field.name == 'is_published':
             field.help_text = _('Снимите галочку, чтобы скрыть публикацию.')
         if db_field.name == 'pub_date':
-            field.help_text = _('Если установить дату и время в будущем — '
+            field.help_text = _('Если установить дату и /
+            'время в будущем — '
                                 'можно делать отложенные публикации.')
         if db_field.name == 'category':
             field.label = _('Категория')
