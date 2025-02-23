@@ -1,14 +1,31 @@
 from django.db import models
+from django.db.models import functions
 from django.contrib.auth import get_user_model
+
+from . import constants
 
 User = get_user_model()
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name='Добавлено')
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, чтобы скрыть публикацию.'
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Category(BaseModel):
+    title = models.CharField(max_length=constants.CATEGORY_TITLE_MAX_LENGTH,
+                             verbose_name='Заголовок')
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
-        max_length=64,
+        max_length=constants.CATEGORY_SLUG_MAX_LENGTH,
         unique=True, blank=True,
         verbose_name='Идентификатор',
         help_text=(
@@ -16,13 +33,6 @@ class Category(models.Model):
 разрешены символы латиницы, цифры, дефис и подчёркивание.'
         )
     )
-    is_published = models.BooleanField(
-        default=True,
-        verbose_name='Опубликовано',
-        help_text='Снимите галочку, чтобы скрыть публикацию.'
-    )
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      verbose_name='Добавлено')
 
     def __str__(self):
         return self.title
@@ -32,12 +42,9 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 
-class Location(models.Model):
-    name = models.CharField(max_length=256, verbose_name='Название места')
-    is_published = models.BooleanField(default=True,
-                                       verbose_name='Опубликовано')
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      verbose_name='Добавлено')
+class Location(BaseModel):
+    name = models.CharField(max_length=constants.LOCATION_NAME_MAX_LENGTH,
+                            verbose_name='Название места')
 
     def __str__(self):
         return self.name
@@ -47,8 +54,18 @@ class Location(models.Model):
         verbose_name_plural = 'Местоположения'
 
 
-class Post(models.Model):
-    title = models.CharField(max_length=256, verbose_name='Название')
+class PostManager(models.Manager):
+    def displayed(self):  # filters posts that can be displayed
+        return self.filter(
+            is_published=True,
+            category__is_published=True,
+            pub_date__lte=functions.Now()
+        )
+
+
+class Post(BaseModel):
+    title = models.CharField(max_length=constants.POST_TITLE_MAX_LENGTH,
+                             verbose_name='Название')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
         verbose_name='Дата и время публикации',
@@ -65,10 +82,8 @@ class Post(models.Model):
     category = models.ForeignKey(Category,
                                  on_delete=models.SET_NULL,
                                  null=True, verbose_name='Категория')
-    is_published = models.BooleanField(default=True,
-                                       verbose_name='Опубликовано')
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      verbose_name='Добавлено')
+
+    objects = PostManager()
 
     def __str__(self):
         return self.title
