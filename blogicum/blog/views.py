@@ -24,7 +24,8 @@ def post_detail(request, post_id):
 
 def category_posts(request, category_slug):
     """Страница категории."""
-    category = get_object_or_404(Category, slug=category_slug, is_published=True)
+    category = get_object_or_404(Category, 
+                                 slug=category_slug, is_published=True)
     posts = category.posts.all()
     return render(request, 'blog/category.html', {
         'category': category,
