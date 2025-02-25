@@ -8,7 +8,7 @@ POSTS_ON_INDEX_PAGE = 5
 
 def index(request):
     """Главная страница проекта."""
-    posts = Post.objects.displayed()[:POSTS_ON_INDEX_PAGE]  # Используем константу
+    posts = Post.objects.displayed()[:POSTS_ON_INDEX_PAGE]
     return render(request, 'blog/index.html', {
         'posts': posts,
     })
@@ -36,4 +36,3 @@ def category_posts(request, category_slug):
         'category': category,
         'post_list': posts
     })
-
