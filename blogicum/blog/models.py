@@ -81,7 +81,9 @@ class Post(BaseModel):
                                  blank=True, verbose_name='Местоположение')
     category = models.ForeignKey(Category,
                                  on_delete=models.SET_NULL,
-                                 null=True, verbose_name='Категория')
+                                 null=True, verbose_name='Категория',
+                                 related_name='posts'
+                                 )
 
     objects = PostManager()
 
