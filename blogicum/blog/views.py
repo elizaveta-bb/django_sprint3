@@ -1,14 +1,14 @@
-# views.py
 from django.shortcuts import render, get_object_or_404
+
 from .models import Post, Category
 
-# Constants
-MAX_DISPLAYED_POSTS = 5
+# Константы
+POSTS_ON_INDEX_PAGE = 5
 
 
 def index(request):
     """Главная страница проекта."""
-    posts = Post.objects.displayed()[:MAX_DISPLAYED_POSTS]
+    posts = Post.objects.displayed()[:POSTS_ON_INDEX_PAGE]  # Используем константу
     return render(request, 'blog/index.html', {
         'posts': posts,
     })
@@ -25,10 +25,15 @@ def post_detail(request, post_id):
 
 def category_posts(request, category_slug):
     """Страница категории."""
-    category = get_object_or_404(Category,
-                                 slug=category_slug, is_published=True)
-    posts = category.posts.filter(is_published=True)
+    category = get_object_or_404(
+        Category,
+        slug=category_slug,
+        is_published=True
+    )
+    posts = category.posts.displayed()
+
     return render(request, 'blog/category.html', {
         'category': category,
-        'post_list': posts,
+        'post_list': posts
     })
+
