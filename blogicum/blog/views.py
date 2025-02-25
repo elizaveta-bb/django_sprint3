@@ -1,7 +1,8 @@
+# views.py
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Category
 
-# Константы
+# Constants
 MAX_DISPLAYED_POSTS = 5
 
 
@@ -26,7 +27,7 @@ def category_posts(request, category_slug):
     """Страница категории."""
     category = get_object_or_404(Category,
                                  slug=category_slug, is_published=True)
-    posts = category.posts.all()
+    posts = category.posts.filter(is_published=True)
     return render(request, 'blog/category.html', {
         'category': category,
         'post_list': posts,
